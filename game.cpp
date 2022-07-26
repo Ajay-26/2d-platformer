@@ -1,11 +1,14 @@
 #include "game.hpp"
 #include "texture_manager.hpp"
-#include "game_object.hpp"
 #include "map.hpp"
+#include "ecs/ecs.hpp"
+#include "ecs/components.hpp"
 
 SDL_Renderer *Game::renderer = nullptr;
-GameObject *player;
 Map *map;
+
+Manager manager;
+auto& player(manager.add_entity());
 
 Game::Game(){
 
@@ -34,8 +37,10 @@ void Game::init(const char *title, int x_pos,int y_pos, int width, int height, i
 		}
 		is_running = true;
 
-		player = new GameObject("asset/player.png",0,0);
 		map = new Map();
+
+		player.add_component<PositionComponent>(0,0);
+		player.add_component<SpriteComponent>("assets/player.png");
 	}else{
 		is_running=false;
 	}
@@ -53,7 +58,8 @@ void Game::handle_events(){
 
 void Game::update(){
 	count++;
-	player->update();
+	manager.refresh();
+	manager.update();
 }
 
 void Game::render(){
@@ -61,7 +67,6 @@ void Game::render(){
 	
 	//this is where we would add stuff to render
 	map->draw_map();
-	player->render();
 
 	SDL_RenderPresent(renderer);
 }

@@ -19,24 +19,26 @@ inline component_id get_component_type_id(){
 template <typename T>
 inline component_id get_component_type_id() noexcept{
 	static component_id type_id = get_component_type_id();
-	return type_id();
+	return type_id;
 }
 
 constexpr std::size_t max_components = 32;
 
 using ComponentBitset = std::bitset<max_components>;
-using ComponentArray = std::array<component *, max_components>;
+using ComponentArray = std::array<Component *, max_components>;
 
 class Component{
 
 public:
 	Entity *entity;
-	virtual void init();
-	virtual void update();
-	virtual void draw();
+	virtual void init() {}
+	virtual void update() {}
+	virtual void draw() {}
 
-	virtual ~Component();
+	virtual ~Component() {}
 };
+
+
 
 class Entity{
 
@@ -73,7 +75,7 @@ public:
 		return component_bitset[get_component_type_id<T>];
 	}
 
-	template <typename T,typename ...Targs>>
+	template <typename T,typename ...TArgs>
 	T& add_component(TArgs&&... mArgs){
 		T* c(new T(std::forward<TArgs>(mArgs)...));
 		c->entity = this;
@@ -89,8 +91,8 @@ public:
 
 	template <typename T>
 	T& get_component() const{
-		auto ptr(componentArray[get_component_type_id<T>()]);
-		return *static_cast<T*>ptr;
+		auto ptr(component_array[get_component_type_id<T>()]);
+		return *static_cast<T*>(ptr);
 	}
 
 };
@@ -122,7 +124,7 @@ public:
 	Entity& add_entity(){
 		Entity *e = new Entity();
 		std::unique_ptr<Entity> uptr(e);
-		entities.emplace_bacK(std::move(uptr));
+		entities.emplace_back(std::move(uptr));
 		return *e;
 	}
-}
+};
