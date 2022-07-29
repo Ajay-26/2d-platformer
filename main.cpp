@@ -35,6 +35,7 @@ int main(int argc, char **argv){
 	}
 
 	game->clean();
+	std::cout << "Done" << std::endl;
 
 	return 0;
 }
