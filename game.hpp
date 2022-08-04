@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 
+class ColliderComponent;
 
 class Game{
 public:
@@ -18,7 +19,8 @@ public:
 
 	static SDL_Renderer *renderer;
 	static SDL_Event event;
-
+	static std::vector<ColliderComponent *> colliders;
+	static void add_tile(int id, int x, int y);
 private:
 	int count = 0;
 	SDL_Texture *player_tex;

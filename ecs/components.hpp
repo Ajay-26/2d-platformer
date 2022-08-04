@@ -5,3 +5,4 @@
 #include "sprite_components.hpp"
 #include "keyboard_controller.hpp"
 #include "collider_component.hpp"
+#include "tile_component.hpp"

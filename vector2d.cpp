@@ -69,6 +69,18 @@ Vector2D& Vector2D::operator/=(const Vector2D& v){
 	return this->divide(v);
 }
 
+Vector2D& Vector2D::operator*=(const int& n){
+	this->x = n*this->x;
+	this->y = n*this->y;
+	return *this;
+}
+
+Vector2D& Vector2D::zero(){
+	this->x = 0.0;
+	this->y = 0.0;
+	return *this;
+}
+
 std::ostream& operator<<(std::ostream& stream, const Vector2D& vec){
 	// Don't take a new line here, do that while calling
 	//Redefining the std::cout function
