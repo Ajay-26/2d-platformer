@@ -72,7 +72,7 @@ public:
 
 	template <typename T>
 	bool has_component() const{
-		return component_bitset[get_component_type_id<T>];
+		return component_bitset[get_component_type_id<T>()];
 	}
 
 	template <typename T,typename ...TArgs>

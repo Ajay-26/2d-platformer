@@ -3,12 +3,16 @@
 #include "map.hpp"
 #include "ecs/ecs.hpp"
 #include "ecs/components.hpp"
+#include "vector2d.hpp"
+#include "collision.hpp"
 
 SDL_Renderer *Game::renderer = nullptr;
 Map *map;
+SDL_Event Game::event;
 
 Manager manager;
 auto& player(manager.add_entity());
+auto& wall(manager.add_entity());
 
 Game::Game(){
 
@@ -21,10 +25,8 @@ Game::~Game(){
 void Game::init(const char *title, int x_pos,int y_pos, int width, int height, int fullscreen){
 	if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
 		std::cout << "Subsystems Initialised" << std::endl;
-	}
-	int flags = 0;
-	if(fullscreen){
-		flags = SDL_WINDOW_FULLSCREEN;
+		int flags = 0;
+		if(fullscreen) flags = SDL_WINDOW_FULLSCREEN;
 		window = SDL_CreateWindow(title,x_pos,y_pos,width,height,flags);
 		//If window is created
 		if(window){
@@ -39,8 +41,15 @@ void Game::init(const char *title, int x_pos,int y_pos, int width, int height, i
 
 		map = new Map();
 
-		player.add_component<PositionComponent>(0,0);
+		player.add_component<TransformComponent>();
 		player.add_component<SpriteComponent>("assets/player.png");
+		player.add_component<KeyboardController>();
+		player.add_component<ColliderComponent>("player");
+
+		wall.add_component<TransformComponent>(300.0f,300.0f,300,20,1);
+		wall.add_component<SpriteComponent>("assets/dirt.png");
+		wall.add_component<ColliderComponent>("wall");
+
 	}else{
 		is_running=false;
 	}
@@ -49,7 +58,6 @@ void Game::init(const char *title, int x_pos,int y_pos, int width, int height, i
 }
 
 void Game::handle_events(){
-	SDL_Event event;
 	SDL_PollEvent(&event);
 	if(event.type == SDL_QUIT){
 		is_running = false;

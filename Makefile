@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = main.cpp game.cpp texture_manager.cpp game_object.cpp map.cpp
+OBJS = main.cpp game.cpp texture_manager.cpp game_object.cpp map.cpp vector2d.cpp collision.cpp
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = main
